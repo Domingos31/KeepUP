@@ -31,7 +31,7 @@ def login():
 @app.route("/")
 def home():
     # return "Olá, mundo! Aplicação rodando no Docker."
-    return render_template('login.html')
+    return render_template('index.html')
 
 
 @app.route('/dashboard')
