@@ -4,24 +4,24 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <title>Login - KeepUp</title>
-  
-  <!-- Inclua os mesmos arquivos CSS do index.html -->
-  <link href="static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="static/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-  <link href="static/vendor/aos/aos.css" rel="stylesheet">
-  <link href="static/css/main.css" rel="stylesheet">
+
+  <!-- CSS correto com url_for -->
+  <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='vendor/aos/aos.css') }}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet">
 </head>
 
 <body class="login-page">
 
   <header id="header" class="header d-flex align-items-center fixed-top">
     <div class="container-fluid position-relative d-flex align-items-center justify-content-between">
-      <a href="index.html" class="logo d-flex align-items-center me-auto me-xl-0">
+      <a href="{{ url_for('home') }}" class="logo d-flex align-items-center me-auto me-xl-0">
         <h1 class="sitename">KeepUp</h1>
       </a>
       <nav id="navmenu" class="navmenu">
         <ul>
-          <li><a href="index.html">Voltar ao Início</a></li>
+          <li><a href="{{ url_for('home') }}">Voltar ao Início</a></li>
         </ul>
       </nav>
     </div>
@@ -40,12 +40,12 @@
                   <p class="text-center small">Insira o seu email e password para entrar</p>
                 </div>
                 
-                <form class="row g-3 needs-validation" novalidate>
+                <form class="row g-3 needs-validation" method="POST" action="{{ url_for('login') }}" novalidate>
                   <div class="col-12">
                     <label for="yourEmail" class="form-label">Email</label>
                     <div class="input-group has-validation">
-                      <span class="input-group-text" id="inputGroupPrepend"><i class="bi bi-envelope"></i></span>
-                      <input type="email" name="email" class="form-control" id="yourEmail" required>
+                      <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                      <input type="email" name="username" class="form-control" id="yourEmail" required>
                       <div class="invalid-feedback">Por favor insira um email válido.</div>
                     </div>
                   </div>
@@ -53,7 +53,7 @@
                   <div class="col-12">
                     <label for="yourPassword" class="form-label">Password</label>
                     <div class="input-group has-validation">
-                      <span class="input-group-text" id="inputGroupPrepend"><i class="bi bi-lock"></i></span>
+                      <span class="input-group-text"><i class="bi bi-lock"></i></span>
                       <input type="password" name="password" class="form-control" id="yourPassword" required>
                       <div class="invalid-feedback">Por favor insira a sua password!</div>
                     </div>
@@ -71,49 +71,47 @@
                   </div>
                   
                   <div class="col-12">
-                    <p class="small mb-0">Não tem uma conta? <a href="registar.html">Crie uma aqui</a></p>
-                    <p class="small mb-0">Esqueceu-se da password? <a href="recuperar-password.html">Recuperar password</a></p>
+                    <p class="small mb-0">Não tem uma conta? <a href="{{ url_for('registar') }}">Crie uma aqui</a></p>
+                    <p class="small mb-0">Esqueceu-se da password? <a href="{{ url_for('recuperar_password') }}">Recuperar password</a></p>
                   </div>
                 </form>
+
               </div>
             </div>
+
           </div>
         </div>
       </div>
     </section>
   </main>
 
-  <!-- Footer e scripts (copie do index.html) -->
   <footer id="footer" class="footer position-relative dark-background">
     <div class="container">
       <h3 class="sitename">KeepUp<br></h3>
       <p>No sítio certo, à hora certa.</p>
       <div class="social-links d-flex justify-content-center">
-        <a href=""><i class="bi bi-twitter-x"></i></a>
-        <a href=""><i class="bi bi-facebook"></i></a>
-        <a href=""><i class="bi bi-instagram"></i></a>
-        <a href=""><i class="bi bi-skype"></i></a>
-        <a href=""><i class="bi bi-linkedin"></i></a>
+        <a href="#"><i class="bi bi-twitter-x"></i></a>
+        <a href="#"><i class="bi bi-facebook"></i></a>
+        <a href="#"><i class="bi bi-instagram"></i></a>
+        <a href="#"><i class="bi bi-skype"></i></a>
+        <a href="#"><i class="bi bi-linkedin"></i></a>
       </div>
-      <div class="container">
-        <div class="copyright">
-          <span>Copyright</span> <strong class="px-1 sitename">KeepUp</strong> <span>All Rights Reserved</span>
-        </div>
-        <div class="credits">
-          Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
-        </div>
+      <div class="copyright">
+        <span>Copyright</span> <strong class="px-1 sitename">KeepUp</strong> <span>All Rights Reserved</span>
+      </div>
+      <div class="credits">
+        Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
       </div>
     </div>
   </footer>
 
-  <!-- Vendor JS Files -->
-  <script src="static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="static/vendor/aos/aos.js"></script>
-  <script src="static/js/main.js"></script>
+  <!-- JS correto com url_for -->
+  <script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendor/aos/aos.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 
   <!-- Validação do formulário -->
   <script>
-    // Validação do formulário
     (function () {
       'use strict'
       const forms = document.querySelectorAll('.needs-validation')
@@ -128,5 +126,6 @@
       })
     })()
   </script>
+
 </body>
 </html>

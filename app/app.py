@@ -1,6 +1,6 @@
 # from flask import Flask
 # from flask import Flask, render_template
-from flask import Flask, request, render_template, redirect, url_for, flash
+from Flask import Flask, request, render_template, redirect, url_for, flash
 
 app = Flask(__name__)
 # app.secret_key = 'sua_chave_secreta'  # Necessário para flash messages
@@ -27,11 +27,17 @@ def login():
 
     return render_template('login.html')
 
+@app.route('/')
+def index():
+    return render_template('index.html')  # se tiveres uma página principal
 
-@app.route("/")
-def home():
-    # return "Olá, mundo! Aplicação rodando no Docker."
-    return render_template('index.html')
+@app.route('/registar')
+def registar():
+    return render_template('registar.html')
+
+@app.route('/recuperar-password')
+def recuperar_password():
+    return render_template('recuperar-password.html')
 
 
 @app.route('/dashboard')
@@ -56,6 +62,11 @@ def busca():
     return f"Você buscou por: {termo}"
 
 
+
+
 if __name__ == "__main__":
     # app.run(host="0.0.0.0", port=8000)
     app.run(debug=True)
+
+
+    
