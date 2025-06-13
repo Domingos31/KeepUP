@@ -1539,6 +1539,34 @@ section,
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
 }
 
+/* ============================= */
+/* Ajuste para evitar header fixo sobrepor o conteúdo */
+.main {
+  padding-top: 100px; /* Ajusta este valor conforme a altura do teu header */
+  color: #212529;     /* Cor do texto para garantir visibilidade */
+}
+
+/* ============================= */
+/* Força visibilidade de elementos com animação AOS */
+[data-aos] {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+header#header {
+  position: fixed;   /* fixa o header na viewport */
+  top: 0;            /* fica no topo */
+  left: 0;           /* alinha à esquerda */
+  width: 100%;       /* largura total da tela */
+  z-index: 1030;     /* fica acima dos outros elementos */
+  background-color: #000000; /* fundo branco para evitar transparência */
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* sombra opcional para destacar */
+}
+
+main.main {
+  padding-top: 80px; /* ajusta conforme a altura real do header */
+}
+
 /*--------------------------------------------------------------
 # Starter Section Section
 --------------------------------------------------------------*/

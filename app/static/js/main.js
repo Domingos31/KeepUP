@@ -26,7 +26,13 @@
     mobileNavToggleBtn.classList.toggle('bi-list');
     mobileNavToggleBtn.classList.toggle('bi-x');
   }
-  mobileNavToggleBtn.addEventListener('click', mobileNavToogle);
+ const elem = document.querySelector('#algumElemento');
+if (elem) {
+  elem.addEventListener('click', function() {
+    // ação
+  });
+}
+
 
   document.querySelectorAll('#navmenu a').forEach(navmenu => {
     navmenu.addEventListener('click', () => {
@@ -55,9 +61,15 @@
   let scrollTop = document.querySelector('.scroll-top');
 
   function toggleScrollTop() {
-    if (scrollTop) {
-      window.scrollY > 100 ? scrollTop.classList.add('active') : scrollTop.classList.remove('active');
-    }
+   if (scrollTop) {
+  scrollTop.addEventListener('click', (e) => {
+    e.preventDefault();
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  });
+}
   }
   scrollTop.addEventListener('click', (e) => {
     e.preventDefault();
