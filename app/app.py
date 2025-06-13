@@ -47,10 +47,6 @@ def show_user(username):
 def sobre():
     return render_template('sobre.html')
 
-@app.route('/busca', methods=['GET'])
-def busca():
-    termo = request.args.get('q')
-    return f"Você buscou por: {termo}"
 
 if __name__ == "__main__":
     app.run(debug=True)
