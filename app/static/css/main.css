@@ -1570,3 +1570,47 @@ main.main {
 /*--------------------------------------------------------------
 # Starter Section Section
 --------------------------------------------------------------*/
+/* CORREÇÕES PARA FORMULÁRIOS */
+.login-page .form-control,
+.registar-page .form-control {
+  background-color: #fff !important;
+  color: #212529 !important;
+  border: 1px solid #ced4da !important;
+  padding: 0.75rem 1rem !important;
+}
+
+.login-page .form-control:focus,
+.registar-page .form-control:focus {
+  border-color: var(--accent-color) !important;
+  box-shadow: 0 0 0 0.25rem rgba(255, 187, 39, 0.25) !important;
+}
+
+.login-page .btn-primary,
+.registar-page .btn-primary {
+  background-color: var(--accent-color) !important;
+  border-color: var(--accent-color) !important;
+  color: var(--contrast-color) !important;
+  transition: all 0.3s !important;
+}
+
+.login-page .btn-primary:hover,
+.registar-page .btn-primary:hover {
+  background-color: #e0a800 !important;
+  border-color: #d39e00 !important;
+  transform: translateY(-2px);
+}
+
+/* Corrige header fixo */
+.login-page main.main,
+.registar-page main.main {
+  padding-top: 100px;
+  min-height: calc(100vh - 160px);
+}
+
+/* Ajustes para mobile */
+@media (max-width: 768px) {
+  .login-page main.main,
+  .registar-page main.main {
+    padding-top: 80px;
+  }
+}

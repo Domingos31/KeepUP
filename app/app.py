@@ -27,8 +27,26 @@ def login():
 def index():
     return render_template('index.html')
 
-@app.route('/registar')
+@app.route('/registar', methods=['GET', 'POST'])
 def registar():
+    if request.method == 'POST':
+        name = request.form.get('name')
+        email = request.form.get('email')
+        password = request.form.get('password')
+        confirm_password = request.form.get('confirmPassword')
+        
+        # Validações
+        if not all([name, email, password, confirm_password]):
+            flash('Preencha todos os campos!', 'error')
+        elif len(password) < 8:
+            flash('A senha deve ter pelo menos 8 caracteres!', 'error')
+        elif password != confirm_password:
+            flash('As senhas não coincidem!', 'error')
+        else:
+            # Aqui você normalmente salvaria no banco de dados
+            flash('Registro realizado com sucesso! Faça login.', 'success')
+            return redirect(url_for('login'))
+    
     return render_template('registar.html')
 
 @app.route('/recuperar-password')
