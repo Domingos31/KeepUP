@@ -1523,6 +1523,22 @@ section,
   color: var(--accent-color);
 }
 
+/* CORREÇÕES ESPECÍFICAS PARA LOGIN (adicionar no FINAL do main.css) */
+.login-page main {
+  background-color: var(--background-color); /* Garante fundo visível */
+}
+
+.login-page .section {
+  overflow: visible !important; /* Impede que o conteúdo seja cortado */
+  min-height: 70vh; /* Altura ajustável conforme necessidade */
+  padding: 2rem 0;
+}
+
+.login-page .card {
+  background: var(--surface-color);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
 /*--------------------------------------------------------------
 # Starter Section Section
 --------------------------------------------------------------*/
