@@ -1615,3 +1615,9 @@ main.main {
   }
 }
 
+form {
+  position: relative;
+  z-index: 1200 !important;
+  pointer-events: auto !important;
+  background: white; /* para garantir que está visível */
+}
