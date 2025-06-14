@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, redirect, url_for, flash
+from flask import Flask, request, render_template, redirect, url_for, flash, session
 
 app = Flask(__name__)
 app.secret_key = '24e23c43d423c434343vfghfgd'
@@ -17,7 +17,8 @@ def login():
             flash('Senha incorreta!', 'error')
         # Simular acesso a database
         elif username == "admin" and password == "123456":
-            return redirect(url_for('dashboard'))
+            session['user'] = username
+            return redirect(url_for('calendario'))
         else:
             flash('Credenciais inválidas!', 'error')
     
@@ -53,9 +54,14 @@ def registar():
 def recuperar_password():
     return render_template('recuperar-password.html')
 
-@app.route('/dashboard')
-def dashboard():
-    return render_template('index.html')
+@app.route('/calendario')
+def calendario():
+    if 'user' not in session:
+        flash('Por favor, faça login primeiro.', 'error')
+        return redirect(url_for('login'))
+    return render_template('calendario.html')
+
+
 
 @app.route('/user/<username>')
 def show_user(username):

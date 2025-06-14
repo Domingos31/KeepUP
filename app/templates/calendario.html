@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>KeepUp - Calendário</title>
+
+  <!-- Favicons --> 
+  <link href="{{ url_for('static', filename='images/Logo Keepup.png') }}" rel="icon" />
+  <link href="{{ url_for('static', filename='images/apple-touch-icon.png') }}" rel="apple-touch-icon" />
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect" />
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Quicksand:wght@300;400;500;600;700&family=Domine:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Bootstrap CSS -->
+  <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" />
+  <link href="{{ url_for('static', filename='vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet" />
+  <link href="{{ url_for('static', filename='vendor/aos/aos.css') }}" rel="stylesheet" />
+  <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet" />
+
+  <!-- FullCalendar CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css" rel="stylesheet" />
+
+  <style>
+    #calendar {
+      max-width: 900px;
+      margin: 40px auto;
+    }
+  </style>
+</head>
+
+<body class="calendario-page">
+
+  <header id="header" class="header d-flex align-items-center fixed-top">
+    <div class="container-fluid position-relative d-flex align-items-center justify-content-between">
+      <a href="{{ url_for('index') }}" class="logo d-flex align-items-center me-auto me-xl-0">
+        <h1 class="sitename">KeepUp</h1>
+      </a>
+      <nav id="navmenu" class="navmenu">
+        <ul>
+          <li><a href="{{ url_for('index') }}">Terminar sessão</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main" style="padding-top: 80px;">
+    <section class="section d-flex align-items-center justify-content-center min-vh-100">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-12">
+
+            <h2 class="text-center mb-4">Calendário de Eventos</h2>
+
+            <div id="calendar"></div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="footer" class="footer position-relative dark-background">
+    <div class="container text-center">
+      <h3 class="sitename">KeepUp</h3>
+      <p>No sítio certo, à hora certa.</p>
+      <div class="social-links d-flex justify-content-center mb-3">
+        <a href="#"><i class="bi bi-twitter-x"></i></a>
+        <a href="#"><i class="bi bi-facebook"></i></a>
+        <a href="#"><i class="bi bi-instagram"></i></a>
+        <a href="#"><i class="bi bi-skype"></i></a>
+        <a href="#"><i class="bi bi-linkedin"></i></a>
+      </div>
+      <div>
+        <span>Copyright</span> <strong class="px-1 sitename">KeepUp</strong> <span>All Rights Reserved</span>
+      </div>
+      <div class="credits">
+        Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap & AOS JS -->
+  <script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendor/aos/aos.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+  <!-- FullCalendar JS -->
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var calendarEl = document.getElementById('calendar');
+
+      var categories = {
+        'Reunião': '#3788d8',
+        'Treino': '#28a745',
+        'Consulta': '#ffc107',
+        'Evento pessoal': '#dc3545'
+      };
+
+      var calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        selectable: true,
+        editable: true,
+        headerToolbar: {
+          left: 'prev,next today',
+          center: 'title',
+          right: 'dayGridMonth,timeGridWeek,timeGridDay'
+        },
+        select: function (info) {
+          let title = prompt('Título do evento:');
+          if (!title) {
+            calendar.unselect();
+            return;
+          }
+
+          let category = prompt('Categoria (Reunião, Treino, Consulta, Evento pessoal):');
+          if (!category || !(category in categories)) {
+            alert('Categoria inválida, o evento será criado com cor padrão.');
+            category = null;
+          }
+
+          calendar.addEvent({
+            title: title,
+            start: info.startStr,
+            end: info.endStr,
+            allDay: info.allDay,
+            backgroundColor: category ? categories[category] : '#3788d8',
+            borderColor: category ? categories[category] : '#3788d8'
+          });
+          calendar.unselect();
+        },
+        eventClick: function (info) {
+          if (confirm(`Deseja eliminar o evento '${info.event.title}'?`)) {
+            info.event.remove();
+          }
+        }
+      });
+
+      calendar.render();
+    });
+  </script>
+
+</body>
+</html>
