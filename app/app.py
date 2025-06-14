@@ -16,7 +16,7 @@ def login():
         elif password != "123456":
             flash('Senha incorreta!', 'error')
         # Simular acesso a database
-        elif username == "admin" and password == "123456":
+        elif username == "domingospulido@gmail.com" and password == "123456":
             session['user'] = username
             return redirect(url_for('calendario'))
         else:

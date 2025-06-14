@@ -5,16 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>KeepUp - Calendário</title>
 
-  <!-- Favicons --> 
+  <!-- Favicons -->
   <link href="{{ url_for('static', filename='images/Logo Keepup.png') }}" rel="icon" />
   <link href="{{ url_for('static', filename='images/apple-touch-icon.png') }}" rel="apple-touch-icon" />
 
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com" rel="preconnect" />
   <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Quicksand:wght@300;400;500;600;700&family=Domine:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Quicksand:wght@400;600&display=swap" rel="stylesheet" />
 
-  <!-- Bootstrap CSS -->
+  <!-- Bootstrap & CSS -->
   <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" />
   <link href="{{ url_for('static', filename='vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet" />
   <link href="{{ url_for('static', filename='vendor/aos/aos.css') }}" rel="stylesheet" />
@@ -25,7 +25,7 @@
 
   <style>
     #calendar {
-      max-width: 900px;
+      max-width: 1000px;
       margin: 40px auto;
     }
   </style>
@@ -33,6 +33,7 @@
 
 <body class="calendario-page">
 
+  <!-- Header -->
   <header id="header" class="header d-flex align-items-center fixed-top">
     <div class="container-fluid position-relative d-flex align-items-center justify-content-between">
       <a href="{{ url_for('index') }}" class="logo d-flex align-items-center me-auto me-xl-0">
@@ -46,22 +47,56 @@
     </div>
   </header>
 
+  <!-- Main -->
   <main class="main" style="padding-top: 80px;">
     <section class="section d-flex align-items-center justify-content-center min-vh-100">
       <div class="container">
         <div class="row justify-content-center">
           <div class="col-12">
-
             <h2 class="text-center mb-4">Calendário de Eventos</h2>
-
             <div id="calendar"></div>
-
           </div>
         </div>
       </div>
     </section>
   </main>
 
+  <!-- Modal para criar evento -->
+  <div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <form id="eventForm" class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="eventModalLabel">Criar Evento</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="eventTitle" class="form-label">Título</label>
+            <input type="text" class="form-control" id="eventTitle" required />
+          </div>
+          <div class="mb-3">
+            <label for="eventCategory" class="form-label">Categoria</label>
+            <select class="form-select" id="eventCategory" required>
+              <option value="">Selecionar...</option>
+              <option value="Reunião">Reunião</option>
+              <option value="Treino">Treino</option>
+              <option value="Consulta">Consulta</option>
+              <option value="Evento pessoal">Evento pessoal</option>
+            </select>
+          </div>
+          <input type="hidden" id="eventStart" />
+          <input type="hidden" id="eventEnd" />
+          <input type="hidden" id="eventAllDay" />
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Footer -->
   <footer id="footer" class="footer position-relative dark-background">
     <div class="container text-center">
       <h3 class="sitename">KeepUp</h3>
@@ -74,35 +109,36 @@
         <a href="#"><i class="bi bi-linkedin"></i></a>
       </div>
       <div>
-        <span>Copyright</span> <strong class="px-1 sitename">KeepUp</strong> <span>All Rights Reserved</span>
-      </div>
-      <div class="credits">
-        Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+        <span>&copy;</span> <strong class="px-1 sitename">KeepUp</strong> <span>Todos os direitos reservados</span>
       </div>
     </div>
   </footer>
 
-  <!-- Bootstrap & AOS JS -->
+  <!-- Scripts -->
   <script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
   <script src="{{ url_for('static', filename='vendor/aos/aos.js') }}"></script>
   <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 
   <!-- FullCalendar JS -->
-  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/locales/pt.global.min.js"></script>
 
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-      var calendarEl = document.getElementById('calendar');
-
-      var categories = {
-        'Reunião': '#3788d8',
+      const calendarEl = document.getElementById('calendar');
+      const categorias = {
+        'Reunião': '#0d6efd',
         'Treino': '#28a745',
         'Consulta': '#ffc107',
         'Evento pessoal': '#dc3545'
       };
 
-      var calendar = new FullCalendar.Calendar(calendarEl, {
+      const modal = new bootstrap.Modal(document.getElementById('eventModal'));
+      const form = document.getElementById('eventForm');
+
+      const calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: 'dayGridMonth',
+        locale: 'pt',
         selectable: true,
         editable: true,
         headerToolbar: {
@@ -110,37 +146,50 @@
           center: 'title',
           right: 'dayGridMonth,timeGridWeek,timeGridDay'
         },
+
         select: function (info) {
-          let title = prompt('Título do evento:');
-          if (!title) {
-            calendar.unselect();
-            return;
-          }
-
-          let category = prompt('Categoria (Reunião, Treino, Consulta, Evento pessoal):');
-          if (!category || !(category in categories)) {
-            alert('Categoria inválida, o evento será criado com cor padrão.');
-            category = null;
-          }
-
-          calendar.addEvent({
-            title: title,
-            start: info.startStr,
-            end: info.endStr,
-            allDay: info.allDay,
-            backgroundColor: category ? categories[category] : '#3788d8',
-            borderColor: category ? categories[category] : '#3788d8'
-          });
-          calendar.unselect();
+          form.reset();
+          document.getElementById('eventStart').value = info.startStr;
+          document.getElementById('eventEnd').value = info.endStr;
+          document.getElementById('eventAllDay').value = info.allDay;
+          modal.show();
         },
+
         eventClick: function (info) {
-          if (confirm(`Deseja eliminar o evento '${info.event.title}'?`)) {
+          if (confirm(`Deseja apagar o evento "${info.event.title}"?`)) {
             info.event.remove();
           }
         }
       });
 
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        const title = document.getElementById('eventTitle').value;
+        const category = document.getElementById('eventCategory').value;
+        const start = document.getElementById('eventStart').value;
+        const end = document.getElementById('eventEnd').value;
+        const allDay = document.getElementById('eventAllDay').value === "true";
+
+        if (!title || !category) return;
+
+        calendar.addEvent({
+          title: title,
+          start: start,
+          end: end,
+          allDay: allDay,
+          backgroundColor: categorias[category],
+          borderColor: categorias[category]
+        });
+
+        modal.hide();
+        calendar.unselect();
+      });
+
       calendar.render();
+    });
+
+    window.addEventListener('error', function (e) {
+      alert("Erro: " + e.message);
     });
   </script>
 
