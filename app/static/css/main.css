@@ -150,7 +150,7 @@ h6 {
   background-color: var(--background-color);
   padding: 20px 0;
   transition: all 0.5s;
-  z-index: 997;
+  z-index: 1300;
 }
 
 .header .logo {
@@ -1558,7 +1558,7 @@ header#header {
   top: 0;            /* fica no topo */
   left: 0;           /* alinha à esquerda */
   width: 100%;       /* largura total da tela */
-  z-index: 1030;     /* fica acima dos outros elementos */
+  z-index: 1300;     /* fica acima dos outros elementos */
   background-color: #000000; /* fundo branco para evitar transparência */
   box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* sombra opcional para destacar */
 }
