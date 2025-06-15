@@ -47,7 +47,7 @@
                   <p class="text-center small">Preencha os seus dados para se registar</p>
                 </div>
                 
-                <form class="row g-3 needs-validation" novalidate>
+                <form class="row g-3 needs-validation" method="POST" action="{{ url_for('registar') }}" novalidate>
                   <div class="col-12">
                     <label for="yourName" class="form-label">Nome Completo</label>
                     <div class="input-group has-validation">

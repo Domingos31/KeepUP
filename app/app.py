@@ -1,4 +1,23 @@
+import sqlite3
 from flask import Flask, request, render_template, redirect, url_for, flash, session
+from werkzeug.security import generate_password_hash, check_password_hash
+
+# Inicialização da BD
+def init_db():
+    conn = sqlite3.connect('users.db')
+    cursor = conn.cursor()
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS users (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            email TEXT NOT NULL UNIQUE,
+            password TEXT NOT NULL
+        )
+    ''')
+    conn.commit()
+    conn.close()
+
+init_db()
 
 app = Flask(__name__)
 app.secret_key = '24e23c43d423c434343vfghfgd'
@@ -6,23 +25,26 @@ app.secret_key = '24e23c43d423c434343vfghfgd'
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        username = request.form.get('username')
+        email = request.form.get('username')
         password = request.form.get('password')
-        
-        if not username or not password:
+
+        if not email or not password:
             flash('Preencha todos os campos!', 'error')
-        elif len(password) < 6:
-            flash('Senha deve ter 6+ caracteres!', 'error')
-        elif password != "123456":
-            flash('Senha incorreta!', 'error')
-        # Simular acesso a database
-        elif username == "domingospulido@gmail.com" and password == "123456":
-            session['user'] = username
-            return redirect(url_for('calendario'))
         else:
-            flash('Credenciais inválidas!', 'error')
-    
+            conn = sqlite3.connect('users.db')
+            cursor = conn.cursor()
+            cursor.execute("SELECT password FROM users WHERE email = ?", (email,))
+            row = cursor.fetchone()
+            conn.close()
+
+            if row and check_password_hash(row[0], password):
+                session['user'] = email
+                return redirect(url_for('calendario'))
+            else:
+                flash('Credenciais inválidas!', 'error')
+
     return render_template('login.html')
+
 
 @app.route('/')
 def index():
@@ -35,8 +57,7 @@ def registar():
         email = request.form.get('email')
         password = request.form.get('password')
         confirm_password = request.form.get('confirmPassword')
-        
-        # Validações
+
         if not all([name, email, password, confirm_password]):
             flash('Preencha todos os campos!', 'error')
         elif len(password) < 8:
@@ -44,10 +65,19 @@ def registar():
         elif password != confirm_password:
             flash('As senhas não coincidem!', 'error')
         else:
-            # Aqui você normalmente salvaria no banco de dados
-            flash('Registro realizado com sucesso! Faça login.', 'success')
-            return redirect(url_for('login'))
-    
+            hashed_password = generate_password_hash(password)
+            try:
+                conn = sqlite3.connect('users.db')
+                cursor = conn.cursor()
+                cursor.execute("INSERT INTO users (name, email, password) VALUES (?, ?, ?)",
+                               (name, email, hashed_password))
+                conn.commit()
+                conn.close()
+                flash('Conta criada com sucesso! Faça login.', 'success')
+                return redirect(url_for('login'))
+            except sqlite3.IntegrityError:
+                flash('Este email já está registado.', 'error')
+
     return render_template('registar.html')
 
 @app.route('/recuperar-password')
@@ -61,8 +91,6 @@ def calendario():
         return redirect(url_for('login'))
     return render_template('calendario.html')
 
-
-
 @app.route('/user/<username>')
 def show_user(username):
     return f"Bem-vindo, {username}!"
@@ -73,4 +101,3 @@ def sobre():
 
 if __name__ == "__main__":
     app.run(debug=True)
-    
