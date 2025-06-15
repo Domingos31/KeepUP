@@ -111,8 +111,6 @@ def get_user_events(user_id):
     conn.close()
     return own_events, shared_events
 
-# Rotas existentes atualizadas
-
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
