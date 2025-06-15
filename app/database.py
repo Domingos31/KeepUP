@@ -3,6 +3,7 @@ import sqlite3
 def init_db():
     conn = sqlite3.connect('users.db')
     cursor = conn.cursor()
+
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -11,6 +12,32 @@ def init_db():
             password TEXT NOT NULL
         )
     ''')
+
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS events (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            title TEXT NOT NULL,
+            category TEXT NOT NULL,
+            start DATETIME NOT NULL,
+            end DATETIME,
+            allday BOOLEAN NOT NULL,
+            creator_id INTEGER NOT NULL,
+            FOREIGN KEY (creator_id) REFERENCES users(id)
+        )
+    ''')
+
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS event_shares (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            event_id INTEGER NOT NULL,
+            user_id INTEGER NOT NULL,
+            permission TEXT NOT NULL, -- 'view' ou 'edit'
+            FOREIGN KEY (event_id) REFERENCES events(id),
+            FOREIGN KEY (user_id) REFERENCES users(id),
+            UNIQUE(event_id, user_id)
+        )
+    ''')
+
     conn.commit()
     conn.close()
 
